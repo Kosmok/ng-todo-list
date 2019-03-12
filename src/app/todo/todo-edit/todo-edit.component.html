@@ -1,3 +1,12 @@
-<p>
-  todo-edit works!
-</p>
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+  <input type="hidden" name="id" formControlName="id" />
+  <mat-form-field>
+    <input matInput placeholder="Name" name="name" formControlName="name" required>
+    <mat-error></mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea matInput placeholder="Description" name="description" formControlName="description"></textarea>
+  </mat-form-field>
+  <button mat-button type="submit" [disabled]="!taskForm.valid">Submit</button>
+</form>

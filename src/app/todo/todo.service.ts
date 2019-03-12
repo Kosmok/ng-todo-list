@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Task } from '../shared/Model/task.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
-
+  tasksChange: Subject<void> = new  Subject<void>();
+  lastId: number = 5;
   private tasks: Task[] = [
     { id: 1, name: 'test1', description: 'opis testu1 ', createData: new Date() },
     { id: 2, name: 'test2', description: 'opis testu2 ', createData: new Date() },
@@ -27,7 +29,36 @@ export class TodoService {
     })};
   }
 
-  addTasks(task: Task) {
-    return this.tasks.push(task);
+  addTask(task: Task) {
+    this.lastId++;
+    task.id = this.lastId;
+    this.tasks.push(task);
+    this.tasksChange.next();
+  }
+
+  editTask(id: number, newTask: Task) {
+    const index = this.tasks.findIndex((task: Task) => {
+      return task.id === id;
+    });
+    this.tasks[index] = {...this.tasks[index], ...newTask };
+
+    this.tasksChange.next();
+  }
+
+  doTask(id: number): any {
+    const index = this.tasks.findIndex((task: Task) => {
+      return task.id === id;
+    });
+    this.tasksChange.next();
+
+  }
+
+  removeTask(id: number): any {
+    const index = this.tasks.findIndex((task: Task) => {
+      return task.id === id;
+    });
+
+    this.tasks.splice(index, 1);
+    this.tasksChange.next();
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from 'src/app/shared/Model/task.model';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TodoService } from '../todo.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class TodoDetailsComponent implements OnInit {
   task: Task;
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private todoService: TodoService) { }
 
   ngOnInit() {
@@ -20,5 +21,17 @@ export class TodoDetailsComponent implements OnInit {
       this.task = this.todoService.getTask(+id);
     });
   }
+  onDo() {
+    this.todoService.doTask(this.task.id);
+    this.router.navigate(['../'], { relativeTo: this.route });
+  }
 
+  onEdit() {
+    this.router.navigate(['edit'], { relativeTo: this.route });
+  }
+
+  onDelete() {
+    this.todoService.removeTask(this.task.id);
+    this.router.navigate(['../'], { relativeTo: this.route });
+  }
 }

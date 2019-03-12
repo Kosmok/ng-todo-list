@@ -12,6 +12,7 @@ export class TodoEditComponent implements OnInit {
   taskId: number;
   taskForm = new FormGroup({
     id: new FormControl(null),
+    createData: new FormControl(null),
     name: new FormControl('', [Validators.required]),
     description: new FormControl('')
   });

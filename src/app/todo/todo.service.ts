@@ -32,6 +32,7 @@ export class TodoService {
   addTask(task: Task) {
     this.lastId++;
     task.id = this.lastId;
+    task.createData = new Date();
     this.tasks.push(task);
     this.tasksChange.next();
   }

@@ -1,3 +1,12 @@
-<mat-toolbar>
-  <span>ToDo List</span>
-</mat-toolbar>
+<header>
+  <mat-toolbar>
+    <span>ToDo</span>
+    <nav>
+      <button mat-button [routerLink]="['/todo-list']">Task list</button>
+      <button mat-button [routerLink]="['/history']">History</button>
+    </nav>
+  </mat-toolbar>
+</header>
+<section>
+  <ng-content></ng-content>
+</section>

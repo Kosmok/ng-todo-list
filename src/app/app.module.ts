@@ -15,6 +15,7 @@ import { TodoNoActionComponent } from './todo/todo-no-action/todo-no-action.comp
 import { MaterialModule } from './material/material.module';
 import { LayoutComponent } from './layout/layout.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -27,14 +28,15 @@ import { ReactiveFormsModule } from '@angular/forms';
     TodoDetailsComponent,
     TodoNoActionComponent,
     HistoryListComponent,
-    LayoutComponent
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -35,9 +35,9 @@ export class TodoEditComponent implements OnInit {
   onSubmit() {
     if (this.taskForm.valid) {
       const newTask = this.taskForm.getRawValue();
-      if(this.taskId) {
+      if (this.taskId) {
         this.todoServer.editTask(this.taskId, newTask);
-      } else{
+      } else {
         this.todoServer.addTask(newTask);
       }
       this.router.navigate(['../'], { relativeTo: this.route });

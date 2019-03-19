@@ -5,10 +5,12 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { LayoutComponent } from './layout/layout.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
-    LayoutComponent
+    LayoutComponent,
+    HomeComponent
   ],
   imports: [
     CommonModule,

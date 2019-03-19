@@ -10,12 +10,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 })
 export class TodoEditComponent implements OnInit {
   taskId: number;
-  taskForm = new FormGroup({
-    id: new FormControl(null),
-    createData: new FormControl(null),
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl('')
-  });
+  editMode = false;
+  taskForm: FormGroup;
 
   constructor(private todoServer: TodoService,
               private router: Router,
@@ -24,10 +20,8 @@ export class TodoEditComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.taskId = +params['id'];
-      if (this.taskId) {
-        const task = this.todoServer.getTask(this.taskId);
-        this.taskForm.setValue(task);
-      }
+      this.editMode = params['id'] != null;
+      this.initForm();
     });
   }
 
@@ -35,12 +29,27 @@ export class TodoEditComponent implements OnInit {
   onSubmit() {
     if (this.taskForm.valid) {
       const newTask = this.taskForm.getRawValue();
-      if (this.taskId) {
+      if (this.editMode) {
         this.todoServer.editTask(this.taskId, newTask);
       } else {
         this.todoServer.addTask(newTask);
       }
       this.router.navigate(['../'], { relativeTo: this.route });
     }
+  }
+
+  initForm() {
+    let taskName = '';
+    let taskDescription = '';
+    if (this.editMode) {
+      const task = this.todoServer.getTask(this.taskId)
+      taskName = task.name;
+      taskDescription = task.description;
+    }
+
+    this.taskForm = new FormGroup({
+      name: new FormControl(taskName, [Validators.required, Validators.minLength(3)]),
+      description: new FormControl(taskDescription)
+    });
   }
 }

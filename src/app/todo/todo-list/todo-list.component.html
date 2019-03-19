@@ -1,7 +1,11 @@
 <button mat-button color="primary" (click)="onAdd()">Add Task</button>
-<mat-list>
+<mat-action-list>
     <mat-divider></mat-divider>
-    <mat-list-item *ngFor="let taskEl of tasks" >
-      <app-todo-task [task]="taskEl"></app-todo-task>
-    </mat-list-item>
-</mat-list>
+    <button
+      mat-list-item 
+      *ngFor="let task of tasks" 
+      [routerLink]="[task.id]"
+      style="cursor: pointer" >
+        {{task.name}}
+    </button>
+</mat-action-list>

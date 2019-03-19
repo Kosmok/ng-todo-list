@@ -1,13 +1,23 @@
-<form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
-  <input type="hidden" name="id" formControlName="id" />
-  <input type="hidden" name="createData" formControlName="createData" />
-  <mat-form-field>
-    <input matInput placeholder="Name" name="name" formControlName="name" required>
-    <mat-error></mat-error>
-  </mat-form-field>
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()" >
+  <mat-card>
+    <mat-card-content class="task-form">
+        <input type="hidden" name="id" formControlName="id" />
+        <input type="hidden" name="createData" formControlName="createData" />
+        <mat-form-field>
+          <input matInput placeholder="Name" name="name" formControlName="name" required>
+          <mat-error></mat-error>
+        </mat-form-field>
 
-  <mat-form-field>
-    <textarea matInput placeholder="Description" name="description" formControlName="description"></textarea>
-  </mat-form-field>
-  <button mat-button type="submit" [disabled]="!taskForm.valid">Submit</button>
+        <mat-form-field>
+          <textarea matInput placeholder="Description" name="description" formControlName="description"></textarea>
+        </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button 
+        mat-button 
+        type="submit" 
+        color="primary" 
+        [disabled]="!taskForm.valid">Submit</button>
+    </mat-card-actions>
+  </mat-card>
 </form>

@@ -1,7 +1,13 @@
-<h2>{{task.name}}</h2>
-<p>
-  {{task.description}}
-</p>
-<button mat-button color="primary" (click)="onDo()">Do</button> 
-<button mat-button (click)="onEdit()">Edit</button>
-<button mat-button color="warn" (click)="onDelete()">Delete</button>
+<mat-card>
+  <mat-card-content>
+      <h2>Name: {{task.name}}</h2>
+      <p>
+        <b>Description:</b> {{task.description}}
+      </p>
+  </mat-card-content>
+  <mat-card-actions>
+      <button mat-button color="primary" (click)="onDo()">Do</button>
+      <button mat-button (click)="onEdit()">Edit</button>
+      <button mat-button color="warn" (click)="onDelete()">Delete</button>
+  </mat-card-actions>
+</mat-card>

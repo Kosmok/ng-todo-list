@@ -2,20 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TodoService } from '../todo.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ICanDeactivateComponent } from 'src/app/shared/guard/can-deactivate-component.guard';
+import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { map } from 'rxjs/operators';
+import { ConfitmDialogComponent } from 'src/app/shared/components/confitm-dialog/confitm-dialog.component';
 
 @Component({
   selector: 'app-todo-edit',
   templateUrl: './todo-edit.component.html',
   styleUrls: ['./todo-edit.component.scss']
 })
-export class TodoEditComponent implements OnInit {
+export class TodoEditComponent implements OnInit, ICanDeactivateComponent {
+
   taskId: number;
   editMode = false;
   taskForm: FormGroup;
 
   constructor(private todoServer: TodoService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
@@ -25,6 +32,9 @@ export class TodoEditComponent implements OnInit {
     });
   }
 
+  getTitle() {
+    return this.editMode ? 'Edit' : 'Add';
+  }
 
   onSubmit() {
     if (this.taskForm.valid) {
@@ -34,8 +44,14 @@ export class TodoEditComponent implements OnInit {
       } else {
         this.todoServer.addTask(newTask);
       }
+      this.editMode = false;
       this.router.navigate(['../'], { relativeTo: this.route });
     }
+  }
+
+  onCancel() {
+    this.editMode = false;
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   initForm() {
@@ -51,5 +67,23 @@ export class TodoEditComponent implements OnInit {
       name: new FormControl(taskName, [Validators.required, Validators.minLength(3)]),
       description: new FormControl(taskDescription)
     });
+  }
+
+  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+    if (!this.taskForm.touched) {
+      return true;
+    }
+    const dialogRef = this.dialog.open(ConfitmDialogComponent, {
+      height: '200px',
+      width: '400px',
+      data: { question: 'Do you want to abandon the changes?'}
+    });
+
+    return dialogRef.afterClosed()
+      .pipe(
+        map((confirmResult: string) => {
+          return confirmResult === 'Yes' ? true : false;
+        })
+      );
   }
 }

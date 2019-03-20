@@ -1,6 +1,7 @@
 export class Task {
-    id: number;
-    name: string;
-    description: string;
-    createData: Date;
+    constructor(
+        public id: string,
+        public name: string,
+        public description: string,
+        public createData: Date) { }
 }

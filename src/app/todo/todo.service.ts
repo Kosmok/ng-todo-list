@@ -1,65 +1,85 @@
 import { Injectable } from '@angular/core';
 import { Task } from '../shared/Model/task.model';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
-  tasksChange: Subject<void> = new  Subject<void>();
-  lastId: number = 5;
+  tasksChange: Subject<Task[]> = new Subject<Task[]>();
+  // lastId: number = 5;
   private tasks: Task[] = [
-    { id: 1, name: 'test1', description: 'opis testu1 ', createData: new Date() },
-    { id: 2, name: 'test2', description: 'opis testu2 ', createData: new Date() },
-    { id: 3, name: 'test3', description: 'opis testu3 ', createData: new Date() },
-    { id: 4, name: 'test4', description: 'opis testu4 ', createData: new Date() },
-    { id: 5, name: 'test5', description: 'opis testu5 ', createData: new Date() },
   ];
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
 
   getTasks() {
-    return this.tasks.slice();
+    this.http.get<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task.json')
+      .pipe(
+        map((tasks) =>
+          Object.keys(tasks)
+            .map(k => new Task(k, tasks[k].name, tasks[k].description, tasks[k].createData)))
+      )
+      .subscribe((tasks: Task[]) => {
+        if (tasks) {
+          this.tasks = tasks;
+        } else {
+          this.tasks = [];
+        }
+        this.tasksChange.next(this.tasks.slice());
+      });
   }
 
-  getTask(id: number) {
-    return {...this.tasks.find((task: Task) => {
-      return task.id === id;
-    })};
+  getTask(id: string) {
+    return {
+      ...this.tasks.find((task: Task) => {
+        return task.id === id;
+      })
+    };
   }
 
   addTask(task: Task) {
-    this.lastId++;
-    task.id = this.lastId;
+    // this.lastId++;
+    // task.id = this.lastId;
     task.createData = new Date();
-    this.tasks.push(task);
-    this.tasksChange.next();
+    this.http.post<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task.json', task)
+      .subscribe((taskId: { name: string }) => {
+        task.id = taskId.name;
+        this.tasks.push(task);
+        this.tasksChange.next(this.tasks.slice());
+      });
+
   }
 
-  editTask(id: number, newTask: Task) {
+  editTask(id: string, newTask: Task) {
+    this.http.put<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task/' + id + '.json', newTask)
+      .subscribe((taskId: { name: string }) => {
+        const index = this.tasks.findIndex((task: Task) => {
+          return task.id === id;
+        });
+        this.tasks[index] = { ...this.tasks[index], ...newTask };
+
+        this.tasksChange.next(this.tasks.slice());
+      });
+  }
+
+  doTask(id: string): any {
     const index = this.tasks.findIndex((task: Task) => {
       return task.id === id;
     });
-    this.tasks[index] = {...this.tasks[index], ...newTask };
-
-    this.tasksChange.next();
-  }
-
-  doTask(id: number): any {
-    const index = this.tasks.findIndex((task: Task) => {
-      return task.id === id;
-    });
-    this.tasksChange.next();
+    this.tasksChange.next(this.tasks.slice());
 
   }
 
-  removeTask(id: number): any {
+  removeTask(id: string): any {
     const index = this.tasks.findIndex((task: Task) => {
       return task.id === id;
     });
 
     this.tasks.splice(index, 1);
-    this.tasksChange.next();
+    this.tasksChange.next(this.tasks.slice());
   }
 }

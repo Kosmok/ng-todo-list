@@ -5,7 +5,7 @@
     </mat-card-title>
     <mat-card-content class="task-form">
         <mat-form-field>
-          <input matInput placeholder="Name" name="name" formControlName="name" required>
+          <input matInput placeholder="Name" name="name" formControlName="name">
           <mat-error></mat-error>
         </mat-form-field>
 
@@ -18,7 +18,7 @@
         mat-button 
         type="submit" 
         color="primary" 
-        [disabled]="!taskForm.valid || !taskForm.touched">Submit</button>
+        [disabled]="!taskForm.valid || !taskForm.dirty">Submit</button>
       <button
         mat-button 
         type="button"

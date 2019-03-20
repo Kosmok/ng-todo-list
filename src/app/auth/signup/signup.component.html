@@ -1,0 +1,13 @@
+<div class="aligner">
+  <form (ngSubmit)="onSignup(f)" #f="ngForm">
+    <mat-form-field>
+      <input matInput placeholder="Email" name="email" required ngModel>
+      <mat-error></mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password" name="password" required ngModel>
+      <mat-error></mat-error>
+    </mat-form-field>
+    <button mat-button class="btn btn-primary" type="submit">Sign Up</button>
+  </form>
+</div>

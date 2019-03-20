@@ -15,7 +15,7 @@ import { ConfitmDialogComponent } from 'src/app/shared/components/confitm-dialog
 })
 export class TodoEditComponent implements OnInit, ICanDeactivateComponent {
 
-  taskId: number;
+  taskId: string;
   editMode = false;
   taskForm: FormGroup;
 
@@ -26,8 +26,8 @@ export class TodoEditComponent implements OnInit, ICanDeactivateComponent {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.taskId = +params['id'];
-      this.editMode = params['id'] != null;
+      this.taskId = params['id'];
+      this.editMode = params['id'] != null && params['id'] != '';
       this.initForm();
     });
   }
@@ -45,12 +45,14 @@ export class TodoEditComponent implements OnInit, ICanDeactivateComponent {
         this.todoServer.addTask(newTask);
       }
       this.editMode = false;
+      this.taskForm.reset();
       this.router.navigate(['../'], { relativeTo: this.route });
     }
   }
 
   onCancel() {
     this.editMode = false;
+    this.taskForm.reset();
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 

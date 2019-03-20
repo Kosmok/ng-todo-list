@@ -16,10 +16,10 @@ export class TodoListComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.tasks = this.todoService.getTasks();
-    this.todoService.tasksChange.subscribe(() => {
-      this.tasks = this.todoService.getTasks();
+    this.todoService.tasksChange.subscribe((tasks: Task[]) => {
+      this.tasks = tasks;
     });
+    this.todoService.getTasks();
   }
 
   onAdd() {

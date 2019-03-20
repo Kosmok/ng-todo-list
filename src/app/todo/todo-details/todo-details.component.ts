@@ -18,7 +18,7 @@ export class TodoDetailsComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       const id = params['id'];
-      this.task = this.todoService.getTask(+id);
+      this.task = this.todoService.getTask(id);
     });
   }
   onDo() {

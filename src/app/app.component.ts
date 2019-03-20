@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'ng-todoList';
+  constructor() {
+    firebase.initializeApp({
+      apiKey: 'AIzaSyAGiO7GlTzj4eVgWBjc8ntH0BqtzuPZnKY',
+      authDomain: 'ng-test-1e5d1.firebaseapp.com'
+    });
+  }
 }

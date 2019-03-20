@@ -20,10 +20,12 @@ $theme: mat-light-theme($primary, $accent, $warn);
 }
 
 
-.sidenav-memu{
-  a.active,
-  a.active:active,
-  a.active:focus {
-    background-color: mat-color($primary, 300);
+a.mat-primary,
+a.mat-primary:active
+{
+  background-color: mat-color($primary, 300);
+  :focus,
+  :hover {
+    background-color: mat-color($primary, 200);
   }
 }

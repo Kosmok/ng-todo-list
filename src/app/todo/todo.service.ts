@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class TodoService {
   tasksChange: Subject<Task[]> = new Subject<Task[]>();
-  // lastId: number = 5;
+
   private tasks: Task[] = [
   ];
 
@@ -42,8 +42,6 @@ export class TodoService {
   }
 
   addTask(task: Task) {
-    // this.lastId++;
-    // task.id = this.lastId;
     task.createData = new Date();
     this.http.post<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task.json', task)
       .subscribe((taskId: { name: string }) => {
@@ -67,6 +65,7 @@ export class TodoService {
   }
 
   doTask(id: string): any {
+    // TODO
     const index = this.tasks.findIndex((task: Task) => {
       return task.id === id;
     });
@@ -75,6 +74,7 @@ export class TodoService {
   }
 
   removeTask(id: string): any {
+    // TODO
     const index = this.tasks.findIndex((task: Task) => {
       return task.id === id;
     });

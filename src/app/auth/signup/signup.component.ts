@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
 
@@ -10,7 +11,8 @@ import { AuthService } from '../auth.service';
 })
 export class SignupComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
   }
@@ -21,6 +23,10 @@ export class SignupComponent implements OnInit {
       const password = form.value.password;
       this.authService.signupUser(email, password);
     }
+  }
+
+  onCancel() {
+    this.router.navigate(['/']);
   }
 
 }

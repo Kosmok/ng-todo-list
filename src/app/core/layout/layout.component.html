@@ -19,8 +19,12 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Todo List</span>
+      <span routerLink="/">Todo List</span>
+      <span class="toolbar-space"></span>
+      <a mat-button routerLink="/login">Login</a>
     </mat-toolbar>
-    <ng-content></ng-content>
+    <div class="content">
+      <ng-content></ng-content>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

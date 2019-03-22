@@ -42,44 +42,55 @@ export class TodoService {
   }
 
   addTask(task: Task) {
-    task.createData = new Date();
-    this.http.post<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task.json', task)
+    const newTask = new Task(null, task.name, task.description);
+    this.http.post<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task.json', newTask)
       .subscribe((taskId: { name: string }) => {
-        task.id = taskId.name;
-        this.tasks.push(task);
+        newTask.id = taskId.name;
+        this.tasks.push(newTask);
         this.tasksChange.next(this.tasks.slice());
       });
 
   }
 
   editTask(id: string, newTask: Task) {
-    this.http.put<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task/' + id + '.json', newTask)
-      .subscribe((taskId: { name: string }) => {
-        const index = this.tasks.findIndex((task: Task) => {
-          return task.id === id;
-        });
-        this.tasks[index] = { ...this.tasks[index], ...newTask };
-
+    const index = this.tasks.findIndex((task: Task) => {
+      return task.id === id;
+    });
+    const taskupdate = { ...this.tasks[index], ...newTask };
+    this.http.put<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task/' + id + '.json', taskupdate)
+      .subscribe((taskupdated: Task) => {
+        this.tasks[index] = taskupdated;
         this.tasksChange.next(this.tasks.slice());
       });
   }
 
   doTask(id: string): any {
-    // TODO
     const index = this.tasks.findIndex((task: Task) => {
       return task.id === id;
     });
-    this.tasksChange.next(this.tasks.slice());
-
+    const taskupdate =
+      new Task(
+          this.tasks[index].id,
+          this.tasks[index].name,
+          this.tasks[index].description,
+          this.tasks[index].createDate,
+          new Date()
+        );
+    this.http.put<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task/' + id + '.json', taskupdate)
+      .subscribe((taskupdated: Task) => {
+        this.tasks[index] = taskupdated;
+        this.tasksChange.next(this.tasks.slice());
+      });
   }
 
   removeTask(id: string): any {
-    // TODO
-    const index = this.tasks.findIndex((task: Task) => {
-      return task.id === id;
+    this.http.delete<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task/' + id + '.json')
+      .subscribe(() => {
+        const index = this.tasks.findIndex((task: Task) => {
+          return task.id === id;
+        });
+        this.tasks.splice(index, 1);
+        this.tasksChange.next(this.tasks.slice());
     });
-
-    this.tasks.splice(index, 1);
-    this.tasksChange.next(this.tasks.slice());
   }
 }

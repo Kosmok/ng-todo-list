@@ -6,7 +6,12 @@
     <mat-card-content class="task-form">
         <mat-form-field>
           <input matInput placeholder="Name" name="name" formControlName="name">
-          <mat-error></mat-error>
+          <mat-error *ngIf="!taskForm.get('name').valid && taskForm.get('name').touched">
+            <span *ngIf="taskForm.get('name').errors['minlength']">
+              Name should have {{taskForm.get('name').errors['minlength']['requiredLength']}} char
+            </span>  
+            <span *ngIf="taskForm.get('name').errors['required']">Name is required</span>  
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field>

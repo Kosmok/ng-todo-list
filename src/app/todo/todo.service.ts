@@ -20,8 +20,9 @@ export class TodoService {
     this.http.get<any>('https://ng-test-1e5d1.firebaseio.com/ToDoApp/Task.json')
       .pipe(
         map((tasks) =>
+        tasks ?
           Object.keys(tasks)
-            .map(k => new Task(k, tasks[k].name, tasks[k].description, tasks[k].createData)))
+            .map(k =>  new Task(k, tasks[k].name, tasks[k].description, tasks[k].createData)) : [])
       )
       .subscribe((tasks: Task[]) => {
         if (tasks) {

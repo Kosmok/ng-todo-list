@@ -36,6 +36,10 @@ export class TodoEditComponent implements OnInit, ICanDeactivateComponent {
     return this.editMode ? 'Edit' : 'Add';
   }
 
+  getFormControl(fieldName: string) {
+    return this.taskForm.get(fieldName);
+  }
+
   onSubmit() {
     if (this.taskForm.valid) {
       const newTask = this.taskForm.getRawValue();
@@ -60,13 +64,13 @@ export class TodoEditComponent implements OnInit, ICanDeactivateComponent {
     let taskName = '';
     let taskDescription = '';
     if (this.editMode) {
-      const task = this.todoServer.getTask(this.taskId)
+      const task = this.todoServer.getTask(this.taskId);
       taskName = task.name;
       taskDescription = task.description;
     }
 
     this.taskForm = new FormGroup({
-      name: new FormControl(taskName, [Validators.required, Validators.minLength(3)]),
+      name: new FormControl(taskName, [Validators.required, Validators.minLength(5)]),
       description: new FormControl(taskDescription)
     });
   }
